@@ -35,7 +35,23 @@ export default class jobModel{
 
       static getAllJobs (){
         return Jobs;
-    }
+      }
+
+      // Add new applicant model 
+    static addNewApplicant = (id, ...applicantData) => {
+      const index = jobs.findIndex((job) => {
+        return job.id == id;
+      });
+      let applicantId = jobs[index].applicants.length + 1;
+      jobs[index].applicants.push({
+        applicat_id: applicantId,
+        name: applicantData[0],
+        email: applicantData[1],
+        contact: applicantData[2],
+        resumePath: applicantData[3],
+      });
+      return jobs[index].applicants;
+    };
 
     static findJobById(id){
         return Jobs.find((job) => {
@@ -43,10 +59,42 @@ export default class jobModel{
         });
 
     }
+    // All aplicants send by id
+    static sentAllApplicants(id){
+      console.log(id);
+      const index = Jobs.findIndex((job)=>{
+        return job.id == id;
+      })
+      return jobs[index].applicants;
+    }
+
+    static updateJob = (id, data) => {
+      const index = Jobs.findIndex((job) => {
+        return job.id == id;
+      });
+      
+      Jobs[index].company_name = data.company_name || jobs[index].company_name;
+      Jobs[index].apply_by = data.apply_by || Jobs[index].apply_by;
+      Jobs[index].job_category = data.job_category || Jobs[index].job_category;
+      Jobs[index].job_designation =
+        data.job_designation || Jobs[index].job_designation;
+      Jobs[index].job_location = data.job_location || Jobs[index].job_location;
+      Jobs[index].job_posted = data.job_posted || Jobs[index].job_posted;
+      Jobs[index].number_of_openings =
+        data.number_of_openings || Jobs[index].number_of_openings;
+      Jobs[index].skills_required =
+        data.skills_required || Jobs[index].skills_required;
+      Jobs[index].salary = data.salary || Jobs[index].salary;
+    }
+
+    static deleteJob = (id) => {
+      const index = Jobs.findIndex((job) => {
+        return job.id == id;
+      });
+      Jobs.splice(index, 1);
+    };
     
 }
-
-
 
 var Jobs = [
     new jobModel(
